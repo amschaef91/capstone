@@ -1,0 +1,147 @@
+﻿@model PersonalProject.Models.ViewModels.RegisterViewModel;
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<h2 class="pb-2">Register</h2>
+<hr />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form method="post" asp-action="Register" class="row g-2 border border-dark-subtle col-md-10 rounded p-2">
+
+        <div class="col-md-6 form-floating">
+            <input asp-for="UserName" class="form-control" id="userName" placeholder="Username"/>
+            <label for="userName">Username:</label>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    <div class="col-md-6 form-floating">
+            
+            <input asp-for="Email" id="Email "class="form-control" placeholder="Email"/>
+            <label for="Email">Email:</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        
+        <div class="w-100"></div>
+
+    <div class="col-md-6 form-floating">
+            
+            <input type="password" asp-for="Password" class="form-control" id="password" placeholder="Password"/>
+            <label for="password">Password:</label>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    <div class="col-md-6 form-floating pb-2">
+            
+            <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password"/>
+            <label asp-for="ConfirmPassword">Confirm Password:</label>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+    <hr class="w-100" />
+
+    <div class="col-md-6 form-floating">
+           
+            <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+            <label asp-for="FirstName">First Name:</label>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    <div class="col-md-6 form-floating">
+            <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+        <label asp-for="LastName">Last Name:</label>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+    <div class="w-100"></div>
+    
+        
+        <div class="col-md-12 form-floating">
+            <input asp-for="Address" class="form-control" placeholder="Address"/>
+            <label asp-for="Address">Address:</label>
+        <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        
+        <div class="col-md-6 form-floating">
+            <input asp-for="City" class="form-control" placeholder="City"/>
+        <label asp-for="City" col-md-2">City:</label>
+        <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 form-floating">
+            <select asp-for="State" class="form-control">
+                <option selected disabled></option>
+                <option Value="AL">Alabama</option>
+                <option Value="AK">Alaska</option>
+                <option Value="AZ">Arizona</option>
+                <option Value="AR">Arkansas</option>
+                <option Value="CA">California</option>
+                <option Value="CO">Colorado</option>
+                <option Value="CT">Connecticut</option>
+                <option Value="DC">District of Columbia</option>
+                <option Value="DE">Delaware</option>
+                <option Value="FL">Florida</option>
+                <option Value="GA">Georgia</option>
+                <option Value="HI">Hawaii</option>
+                <option Value="ID">Idaho</option>
+                <option Value="IL">Illinois</option>
+                <option Value="IN">Indiana</option>
+                <option Value="IA">Iowa</option>
+                <option Value="KS">Kansas</option>
+                <option Value="KY">Kentucky</option>
+                <option Value="LA">Louisiana</option>
+                <option Value="ME">Maine</option>
+                <option Value="MD">Maryland</option>
+                <option Value="MA">Massachusetts</option>
+                <option Value="MI">Michigan</option>
+                <option Value="MN">Minnesota</option>
+                <option Value="MS">Mississippi</option>
+                <option Value="MO">Missouri</option>
+                <option Value="MT">Montana</option>
+                <option Value="NE">Nebraska</option>
+                <option Value="NV">Nevada</option>
+                <option Value="NH">New Hampshire</option>
+                <option Value="NJ">New Jersey</option>
+                <option Value="NM">New Mexico</option>
+                <option Value="NY">New York</option>
+                <option Value="NC">North Carolina</option>
+                <option Value="ND">North Dakota</option>
+                <option Value="OH">Ohio</option>
+                <option Value="OK">Oklahoma</option>
+                <option Value="OR">Oregon</option>
+                <option Value="PA">Pennsylvania</option>
+                <option Value="RI">Rhode Island</option>
+                <option Value="SC">South Carolina</option>
+                <option Value="SD">South Dakota</option>
+                <option Value="TN">Tennessee</option>
+                <option Value="TX">Texas</option>
+                <option Value="UT">Utah</option>
+                <option Value="VT">Vermont</option>
+                <option Value="VA">Virginia</option>
+                <option Value="WA">Washington</option>
+                <option Value="WV">West Virginia</option>
+                <option Value="WI">Wisconsin</option>
+                <option Value="WY">Wyoming</option>
+                </select>
+        <label asp-for="State">State:</label>
+                <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+        <div class="col-md-2 form-floating">
+            <input asp-for="Zip" class="form-control" placeholder="Zipcode"/>
+            <label asp-for="Zip">Zipcode:</label>
+        <span asp-validation-for="Zip" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-floating">
+            <input id="phone" class="form-control input-phone" asp-for="Phone" placeholder="phone" />
+        <label asp-for="Phone">Phone:</label>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+    <div class="w-100"></div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Cancel</a>
+            <a asp-action="LogIn" class="pl-1">Log In</a>
+        </div>
+
+
+</form>
+@section scripts {
+    <script src="~/js/cleave.min.js"></script>
+}
