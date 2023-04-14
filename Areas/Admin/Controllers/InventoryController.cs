@@ -5,17 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PersonalProject.Models.ViewModels;
+using PersonalProject.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace PersonalProject.Areas.Admin.Controllers
 {
-    public class AdminItemController: Controller
+    [Area("admin")]
+    [Authorize(Roles = "Admin")]
+    public class InventoryController : Controller
     {
 
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _environment;
 
-        public AdminItemController(ApplicationDbContext context, IWebHostEnvironment environment)
+        public InventoryController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
             _environment = environment;
@@ -39,7 +43,10 @@ namespace PersonalProject.Areas.Admin.Controllers
                     Price = model.Price,
                     Stock = model.Stock
                 };
+                _context.Items.Add(item);
+                await _context.SaveChangesAsync();
 
+                int itemID = item.ItemID;
                 if (model.Images != null && model.Images.Count > 5)
                 {
                     ModelState.AddModelError(string.Empty, "You can only upload up to 5 images.");
@@ -48,31 +55,37 @@ namespace PersonalProject.Areas.Admin.Controllers
 
                 if (model.Images != null && model.Images.Count > 0)
                 {
-                    item.ItemImages = new List<ItemImages>();
+                    var imagePath = "/images/" + itemID + "/";
+                    var directoryPath = _environment.WebRootPath + imagePath;
+
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    var images = new List<ItemImages>();
                     foreach (var image in model.Images)
                     {
-                        var imagePath = "/images/" + model.Name + "/" + image.FileName;
-                        var savePath = _environment.WebRootPath + imagePath;
-
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                        var savePath = Path.Combine(directoryPath, fileName);
                         using (var fileStream = new FileStream(savePath, FileMode.Create))
                         {
-                            await image.CopyToAsync(fileStream);
+                            image.CopyTo(fileStream);
                         }
 
-                        item.ItemImages.Add(new ItemImages
+                        images.Add(new ItemImages
                         {
-                            ImgPath = imagePath
-                        });
+                            ItemID = itemID,
+                            ImgPath = imagePath + fileName
+                        }
+                        );
                     }
+                    _context.ItemImages.AddRange(images);
+                    await _context.SaveChangesAsync();
                 }
-
-                _context.Items.Add(item);
-                await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

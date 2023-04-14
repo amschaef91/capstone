@@ -20,6 +20,7 @@ namespace PersonalProject.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<ItemImages> ItemImages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

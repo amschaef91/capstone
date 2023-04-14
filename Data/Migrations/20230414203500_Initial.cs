@@ -138,12 +138,14 @@ namespace PersonalProject.Data.Migrations
                 name: "ItemImages",
                 columns: table => new
                 {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ItemID = table.Column<int>(type: "int", nullable: false),
                     ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemImages", x => x.ItemID);
+                    table.PrimaryKey("PK_ItemImages", x => x.ID);
                     table.ForeignKey(
                         name: "FK_ItemImages_Items_ItemID",
                         column: x => x.ItemID,
@@ -324,6 +326,11 @@ namespace PersonalProject.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemImages_ItemID",
+                table: "ItemImages",
+                column: "ItemID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_ItemID",

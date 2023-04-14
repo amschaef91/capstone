@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PersonalProject.Data;
-using PersonalProject.Models.ViewModels;
+using System.IO;
+using static System.Net.Mime.MediaTypeNames;
+using PersonalProject.Areas.Admin.Models;
 
 namespace PersonalProject.Controllers
 {
@@ -41,7 +43,10 @@ namespace PersonalProject.Controllers
                     Price = model.Price,
                     Stock = model.Stock
                 };
+                _context.Items.Add(item);
+                await _context.SaveChangesAsync();
 
+                int itemID = item.ItemID;
                 if (model.Images != null && model.Images.Count > 5)
                 {
                     ModelState.AddModelError(string.Empty, "You can only upload up to 5 images.");
@@ -50,32 +55,37 @@ namespace PersonalProject.Controllers
 
                 if (model.Images != null && model.Images.Count > 0)
                 {
-                    item.ItemImages = new List<ItemImages>();
+                    var imagePath = "/images/" + itemID + "/";
+                    var directoryPath = _environment.WebRootPath + imagePath;
+                    
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    var images = new List<ItemImages>();
                     foreach (var image in model.Images)
                     {
-                        var imagePath = "/images/" + model.Name + "/" + image.FileName;
-                        var savePath = _environment.WebRootPath + imagePath;
-                        Directory.CreateDirectory(savePath);
-
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                        var savePath = Path.Combine(directoryPath, fileName);
                         using (var fileStream = new FileStream(savePath, FileMode.Create))
                         {
-                            await image.CopyToAsync(fileStream);
+                            image.CopyTo(fileStream);
                         }
 
-                        item.ItemImages.Add(new ItemImages
+                        images.Add(new ItemImages
                         {
-                            ImgPath = imagePath
-                        });
+                            ItemID = itemID,
+                            ImgPath = imagePath + fileName
+                        }
+                        ) ;
                     }
+                    _context.ItemImages.AddRange(images);
+                    await _context.SaveChangesAsync();
                 }
-
-                _context.Items.Add(item);
-                await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(model);
+             return RedirectToAction(nameof(Index));
         }
     }
 }

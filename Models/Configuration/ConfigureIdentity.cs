@@ -15,7 +15,7 @@ namespace PersonalProject.Models.Configuration
             RoleManager<Role> roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
 
             string userName = "admin";
-            string password = "placeHolder";
+            string password = "1!placeHolder";
             List<string> roleNames = new List<string> { "Admin", "Sales", "Shipping" };
 
 

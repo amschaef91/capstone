@@ -23,9 +23,8 @@ namespace PersonalProject.Models
 
         public Item(){}
 
-        public Item(int itemID, string name, string description, decimal price, int stock)
+        public Item(string name, string description, decimal price, int stock)
         {
-            ItemID = itemID;
             Name = name;
             Description = description;
             Price = price;

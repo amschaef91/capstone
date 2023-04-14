@@ -14,8 +14,8 @@
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_LoginPartial.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
-    <None Include="Views\_ViewImports.cshtml" />
-    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="_ViewImports.cshtml" />
+    <None Include="_ViewStart.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,8 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Item\" />
+    <Folder Include="Areas\Admin\Shared\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Views\Item\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

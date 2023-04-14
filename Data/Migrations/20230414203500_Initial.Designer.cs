@@ -12,7 +12,7 @@ using PersonalProject.Data;
 namespace PersonalProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230414180829_Initial")]
+    [Migration("20230414203500_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -201,14 +201,22 @@ namespace PersonalProject.Data.Migrations
 
             modelBuilder.Entity("PersonalProject.Models.ItemImages", b =>
                 {
-                    b.Property<int>("ItemID")
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("ImgPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ItemID");
+                    b.Property<int>("ItemID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ItemID");
 
                     b.ToTable("ItemImages");
                 });
