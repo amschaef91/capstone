@@ -1,41 +1,125 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using PersonalProject.Data;
+using PersonalProject.Models.Configuration;
+using PersonalProject.Models.DTOs;
+using PersonalProject.Models.Extensions;
+using PersonalProject.Models.Repositories;
+using PersonalProject.Models.ViewModels;
+using System.Text;
+using System.Text.Json;
 
 namespace PersonalProject.Models
 {
     public class Cart
     {
-        private List<Item> products;
+        private const string CartKey = "Cart";
+        private const string CountKey = "Count";
 
-        public Cart()
+        private ISession session { get; set; }
+        private IRequestCookieCollection requestCookies { get; set; }
+        private IResponseCookies responseCookies { get; set; }
+
+        private List<CartItem> items { get; set; } = null!;
+        private List<CartItemDTO> cookieItems { get; set; } = null!;
+
+        public Cart(HttpContext ctx)
         {
-            products = new List<Item>();
+            session = ctx.Session;
+            requestCookies = ctx.Request.Cookies;
+            responseCookies = ctx.Response.Cookies;
         }
         
-        public void AddItem(Item product)
+        public void Load(ItemRepository<Item> data)
         {
-            products.Add(product);
-        }
+            var value = session.GetString(CartKey);
+            items = JsonSerializer.Deserialize<List<CartItem>>(value) 
+                ?? new List<CartItem>();
+            cookieItems = JsonSerializer.Deserialize<List<CartItemDTO>>(value) 
+                ?? new List<CartItemDTO>();
 
-        public void RemoveItem(Item product)
-        {
-            products.Remove(product);
-        }
-        public List<Item> GetProducts()
-        {
-            return products;
-        }
-
-        public decimal GetSubTotal()
-        {
-            decimal subtotal = 0;
-            foreach(var product in products)
+            if (cookieItems.Count > items.Count)
             {
-                subtotal += product.Price;
+                items.Clear();
+
+                foreach (CartItemDTO storedItem in cookieItems)
+                {
+                    var newItem = data.Get(new QueryOptions<Item>
+                    {
+                        Where = i => i.ItemID == storedItem.ItemID
+                    });
+                    if (newItem != null)
+                    {
+                        CartItem item = new()
+                        {
+                            Item = new ItemDTO(newItem),
+                            Quantity = storedItem.Quantity 
+                        };
+                        items.Add(item);
+                    }
+                }
+
             }
-            return subtotal;
+        }
+
+        public decimal Subtotal => items.Sum(i => i.Subtotal);
+        public int? Count => session.GetInt32(CountKey) ?? requestCookies.GetInt32(CountKey);
+        public IEnumerable<CartItem> List => items;
+
+        public CartItem? GetByID(int? id)
+        {
+            if (items == null || id == null)
+            {
+                return null;
+            }
+            else
+            {
+                return items.FirstOrDefault(ci => ci.Item?.ItemID == id);
+            }
+        }
+
+        public void Add(CartItem item)
+        {
+            var itemInCart = GetByID(item.Item.ItemID);
+            if (itemInCart != null)
+            {
+                items.Add(item);
+            }
+            else
+            {
+                itemInCart.Quantity += 1;
+            }
+        }
+
+        public void Edit(CartItem item)
+        {
+            var itemInCart = GetByID(item.Item.ItemID);
+            if (itemInCart != null)
+            {
+                itemInCart.Quantity = item.Quantity;
+            }
+        }
+
+        public void Remove(CartItem item) => items.Remove(item);
+
+        public void Clear() => items.Clear();
+
+        public void Save()
+        {
+            if (items.Count == 0)
+            {
+                session.Remove(CartKey);
+                session.Remove(CountKey);
+                responseCookies.Delete(CartKey);
+                responseCookies.Delete(CountKey);
+            }
+            else
+            {
+                session.SetObject<List<CartItem>>(CartKey, items);
+                session.SetInt32(CountKey, items.Count);
+                responseCookies.SetObject<List<CartItemDTO>>(CartKey, items.ToDTO());
+                responseCookies.SetInt32(CountKey, items.Count);
+            }
         }
     }
 }
+
