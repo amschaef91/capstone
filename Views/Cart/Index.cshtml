@@ -1,0 +1,69 @@
+﻿@using PersonalProject.Models.ViewModels;
+@model PersonalProject.Models.ViewModels.CartViewModel
+
+@{
+    ViewData["Title"] = " | Cart";
+}
+
+<h1>Your Cart</h1>
+
+<form asp-action="Clear" method="post">
+    <ul class="list-group mb-4">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">
+                    Subtotal: @Model.Subtotal.ToString("c")
+                </div>
+                <div class="col">
+                    <div class="float-end">
+                        <a asp-action="Checkout" class="btn btn-primary">Checkout</a>
+                        <button type="submit" class="btn btn-primary">Clear Cart</button>
+                        <a asp-action="List" asp-controller="Item">Back to Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</form>
+<form asp-action="Remove" method="post">
+    <table class="table">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (CartItem item in Model.List)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-controller="Item"
+                       asp-route-id="@item.Item.ItemID"
+                       asp-route-slug="@item.Item.Name.Slug()">
+                            @item.Item.Name
+                        </a>
+                    </td>
+                    <td>@item.Item.Price.ToString("c")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Subtotal.ToString("c")</td>
+                    <td>
+                        <div class="float-end">
+                            <a asp-action="Edit" asp-controller="Cart"
+                           asp-route-id="@item.Item.ItemID"
+                           asp-route-slug="@item.Item.Name.Slug()"
+                               class="btn btn-primary">Edit</a>
+                            <button type="submit" name="id" value="@item.Item.ItemID"
+                                    class="btn btn-primary">
+                                Remove
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

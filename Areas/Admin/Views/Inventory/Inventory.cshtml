@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PersonalProject.Models.ViewModels.ItemImageViewModel>
+
+<form>
+    <form asp-controller="Inventory">
+        @foreach (var group in Model.Select((item, index) => new { Item = item, Index = index })
+        .GroupBy(x => x.Index / 3))
+        {
+            <div class="row">
+                @foreach (var item in group.Select(x => x.Item))
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
+                                <div class="carousel-inner">
+                                    @foreach (var image in item.ItemImages.Where(img => img.ItemID == item.Item.ItemID))
+                                    {
+                                        <div class="carousel-item @(image == item.ItemImages.FirstOrDefault() ? "active" : "")">
+                                            <img src="@image.ImgPath" class="d-block w-100" alt="@item.Item.Name" width="400" height="400" style="object-fit: contain">
+                                        </div>
+                                    }
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Item.Name</h5>
+                                <p class="card-text">@item.Item.Description</p>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    @item.Item.Price
+
+                                    <button asp-action="edit" asp-route-id="@item.Item.ItemID" class="btn btn-primary float-end">
+                                        Edit
+                                    </button>
+                                    <button asp-action="delete" asp-route-id="@item.Item.ItemID" class="btn btn-primary float-end">
+                                        Delete
+                                    </button>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </form>
+</form>

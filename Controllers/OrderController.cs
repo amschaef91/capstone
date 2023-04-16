@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PersonalProject.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,26 @@ namespace PersonalProject.Controllers
 {
     public class OrderController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public OrderController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
+
+        public IActionResult ViewAll()
+        {
+            var items = _context.Orders.Include(i => i.OrderID);
+            return View(items);
+        }
+        public IActionResult Checkout()
+        {
+            return View();
+        } 
     }
 }

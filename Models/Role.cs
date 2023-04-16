@@ -8,7 +8,7 @@ namespace PersonalProject.Models
 {
     public class Role : IdentityRole
     {
-        public override string Name { get; set; }
+        public override string Name { get; set; } = string.Empty;
 
         public Role() { }
         public Role(string name)

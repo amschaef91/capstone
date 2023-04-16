@@ -11,15 +11,15 @@ namespace PersonalProject.Models
     public class Item
     {
         public int ItemID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
         public int Stock { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-        public List<ItemImages> ItemImages { get; set; }
+        public List<ItemImages> ItemImages { get; set; } = new List<ItemImages>();
 
         public Item(){}
 

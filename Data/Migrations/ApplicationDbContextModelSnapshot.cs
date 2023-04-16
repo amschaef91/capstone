@@ -208,6 +208,9 @@ namespace PersonalProject.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ItemID")
                         .HasColumnType("int");
 

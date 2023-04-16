@@ -20,6 +20,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 var app = builder.Build();
 

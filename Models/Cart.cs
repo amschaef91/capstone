@@ -12,8 +12,8 @@ namespace PersonalProject.Models
 {
     public class Cart
     {
-        private const string CartKey = "Cart";
-        private const string CountKey = "Count";
+        private const string CartKey = "mycart";
+        private const string CountKey = "mycount";
 
         private ISession session { get; set; }
         private IRequestCookieCollection requestCookies { get; set; }
@@ -31,10 +31,9 @@ namespace PersonalProject.Models
         
         public void Load(ItemRepository<Item> data)
         {
-            var value = session.GetString(CartKey);
-            items = JsonSerializer.Deserialize<List<CartItem>>(value) 
+            items = session.GetObject<List<CartItem>>(CartKey) 
                 ?? new List<CartItem>();
-            cookieItems = JsonSerializer.Deserialize<List<CartItemDTO>>(value) 
+            cookieItems = requestCookies.GetObject<List<CartItemDTO>>(CartKey) 
                 ?? new List<CartItemDTO>();
 
             if (cookieItems.Count > items.Count)
@@ -73,14 +72,14 @@ namespace PersonalProject.Models
             }
             else
             {
-                return items.FirstOrDefault(ci => ci.Item?.ItemID == id);
+                return items.FirstOrDefault(ci => ci != null && ci.Item?.ItemID == id);
             }
         }
 
         public void Add(CartItem item)
         {
             var itemInCart = GetByID(item.Item.ItemID);
-            if (itemInCart != null)
+            if (itemInCart == null)
             {
                 items.Add(item);
             }

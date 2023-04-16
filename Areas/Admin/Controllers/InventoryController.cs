@@ -30,7 +30,11 @@ namespace PersonalProject.Areas.Admin.Controllers
             return View();
         }
 
-
+        public IActionResult Inventory()
+        {
+            var items = _context.Items.ToList();
+            return View(items);
+        }
 
         public async Task<IActionResult> AddItem(ItemViewModel model)
         {

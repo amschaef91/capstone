@@ -61,7 +61,7 @@ namespace PersonalProject.Controllers
                 TempData["message"] = $"{item.Name} added to cart";
             }
 
-            return RedirectToAction("List", "Item");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -74,7 +74,7 @@ namespace PersonalProject.Controllers
                 cart.Save();
                 TempData["message"] = $"{item.Item.Name} removed from cart";
             }
-            return RedirectToAction("List", "Item");
+            return RedirectToAction("Index", "Cart");
         }
 
         [HttpPost]
@@ -89,13 +89,13 @@ namespace PersonalProject.Controllers
         }
 
         [HttpPost]
-        public RedirectToActionResult Edit(CartItem item)
+        public RedirectToActionResult Edit(CartItem cartItem)
         {
             Cart cart = GetCart();
-            cart.Edit(item);
+            cart.Edit(cartItem);
             cart.Save();
 
-            TempData["message"] = $"{item.Item.Name} updated";
+            TempData["message"] = $"{cartItem.Item.Name} updated";
             return RedirectToAction("Index");
         }
 
