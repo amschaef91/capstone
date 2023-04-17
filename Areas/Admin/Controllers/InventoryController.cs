@@ -170,7 +170,7 @@ namespace PersonalProject.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-     
+            
             var model = new ItemImageViewModel
             {
                 Item = _context.Items.FirstOrDefault(i => i.ItemID == id),

@@ -1,9 +1,63 @@
-﻿@model PersonalProject.Models.ViewModels.OrderViewModel
+﻿@using PersonalProject.Models.ViewModels;
+@model PersonalProject.Models.ViewModels.OrderViewModel
 
 @{
     ViewData["Title"] = "Checkout";
 }
 
-<div class="">
+<div class="row">
+    <span class="col-md-6">
+    @Html.DisplayFor(model => Model.Customer.FirstName) @Html.DisplayFor(model => Model.Customer.LastName)
+    </span>
+    <span class="col-md-6">
+        @Html.DisplayFor(model => Model.Customer.Address)
+    </span>
+    <span class="col-md-6">
+        @Html.DisplayFor(model => Model.Customer.City) @Html.DisplayFor(model => Model.Customer.State) @Html.DisplayFor(model => Model.Customer.Zip)
+    </span>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+            <td>
+                Item Name
+            </td>
+            <td>
+                Price
+            </td>
+                <td>
+                    Quantity
+                </td>
+            </tr>
+        </thead>
+        
+        @foreach (CartItem item in Model.List)
+            {
+                <tr>
+                    <td>
+                        @item.Item.Name
+                    </td>
+                    <td>
+                        @item.Item.Price.ToString("c")
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                    <td>
+                        @item.Subtotal.ToString("c")
+                    </td>
+                </tr>
+            }
+        <tr><td>
+        
+        </td></tr>
 
+    
+    </table>
+    <hr />
+
+    <div>
+        Subtotal: @Model.Subtotal.ToString("c")
+    </div>
+    <a class="btn btn-primary" asp-action="confirmOrder">Place Order</a>
 </div>

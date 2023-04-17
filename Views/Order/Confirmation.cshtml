@@ -1,0 +1,57 @@
+﻿@model PersonalProject.Models.ViewModels.ConfirmationViewModel
+@{
+    int total = 0;
+}
+<div class="row">
+    <span class="col-md-6">
+        @Html.DisplayFor(model => Model.Customer.FirstName) @Html.DisplayFor(model => Model.Customer.LastName)
+    </span>
+    <span class="col-md-6">
+        @Html.DisplayFor(model => Model.Customer.Address)
+    </span>
+    <span class="col-md-6">
+        @Html.DisplayFor(model => Model.Customer.City) @Html.DisplayFor(model => Model.Customer.State) @Html.DisplayFor(model => Model.Customer.Zip)
+    </span>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    Item Name
+                </td>
+                <td>
+                    Price
+                </td>
+                <td>
+                    Quantity
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            
+                @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+            <td>
+                @item.Item.Name    
+            </td>
+            <td>
+                @item.UnitPrice
+            </td>
+            <td>
+                @item.Quantity
+            </td>
+            </tr>
+            total += item.Quantity;
+            }
+            
+            
+        </tbody>
+        </table>
+
+        <hr />
+    <div class="row">
+    <div>Subtotal: @Model.Order.Total.ToString("c")</div>
+    <div>Order Status: @Model.OrderStatus.Status.ToString()</div>
+    <div>Total Items: @total</div>
+</div>

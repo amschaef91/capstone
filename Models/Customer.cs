@@ -26,7 +26,7 @@ namespace PersonalProject.Models
         public string State { get; set; }
         [Required(ErrorMessage = "Zip is required")]
         [RegularExpression(@"(^\d{5}$)|(^\d{9}$)| (^\d{ 5}-\d{ 4}$)", ErrorMessage = "Invalid Zipcode")]
-        public String Zip { get; set; }
+        public string Zip { get; set; }
         [Phone]
         [Required(ErrorMessage = "Phone number is Required")]
         [RegularExpression(@"^((\+1|1)?\(?(800|[0-9]{3})(\)?\s?|\s?))?\-?[0-9]{3}(\s|\-)?[0-9]{4}$",

@@ -12,8 +12,8 @@ namespace PersonalProject.Models.ViewModels
     {
         public ChangePasswordViewModel PasswordViewModel { get; set; }
         public ChangeEmailViewModel EmailViewModel { get; set; }
-
+        public Customer Customer { get; set; } 
         public User User { get; set; }
-        public Customer Customer { get; set; }
+
     }
 }

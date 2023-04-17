@@ -45,5 +45,28 @@ namespace PersonalProject.Controllers
             return View(items);
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = _context.Items.FirstOrDefault(i => i.ItemID  == id);
+            var images = _context.ItemImages.Where(img => img.ItemID == id).ToList();
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ItemImageViewModel
+            {
+                Item = item,
+                ItemImages = images
+            };
+
+            return View(model);
+        }
+
     }
 }

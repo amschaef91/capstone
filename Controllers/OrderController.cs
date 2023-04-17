@@ -45,6 +45,7 @@ namespace PersonalProject.Controllers
             var items = _context.Orders.Include(i => i.OrderID);
             return View(items);
         }
+        [Authorize]
         public async Task<IActionResult> Checkout()
         {
             Cart cart = GetCart();
@@ -58,5 +59,64 @@ namespace PersonalProject.Controllers
             };
             return View(model);
         } 
+
+        public async Task<IActionResult> ConfirmOrder()
+        {
+            Cart cart = GetCart();
+            var user = await _userManager.GetUserAsync(User);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerID == user.CustomerID);
+            var items = new List<OrderItem>();
+            try
+            {
+                var order = new Order()
+                {
+                    CustomerID = customer.CustomerID,
+                    Total = cart.Subtotal,
+                    OrderDate = DateTime.Now,
+                };
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+
+                foreach (var item in cart.List)
+                {
+                    var newItem = new OrderItem()
+                    {
+                        OrderID = order.OrderID,
+                        ItemID = item.Item.ItemID,
+                        UnitPrice = item.Item.Price,
+                        Quantity = item.Quantity
+                    };
+                    items.Add(newItem);
+                }
+
+                _context.OrderItem.AddRange(items);
+
+                var status = new OrderStatus
+                {
+                    OrderID = order.OrderID,
+                    Status = Status.PENDING,
+                };
+
+                _context.OrderStatuses.Add(status);
+
+                var model = new ConfirmationViewModel()
+                {
+                    User = user,
+                    Customer = customer,
+                    Order = order,
+                    OrderItems = items,
+                    OrderStatus = status
+
+                };
+                cart.Clear();
+                cart.Save();
+                _context.SaveChanges();
+                return View("Confirmation", model);
+
+            }catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
     }
 }

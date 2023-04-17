@@ -214,18 +214,18 @@ namespace PersonalProject.Controllers
             {
                 PasswordViewModel = passwordVM,
                 EmailViewModel = emailVM,
-                User = user,
-                Customer = customer
+                Customer = customer,
+                User = user
             };
 
             return View(editUser);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Manage(UserManageViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var user = await userManager.FindByNameAsync(model.User.UserName);
                 var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerID == user.CustomerID);
 
@@ -258,9 +258,8 @@ namespace PersonalProject.Controllers
 
                 TempData["userMessage"] = "User information Successfully Updated";
                 return RedirectToAction("Manage");
-            }
-
-            return View(model);
+            
+            
         }
     }
 }
