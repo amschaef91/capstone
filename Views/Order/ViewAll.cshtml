@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Order>
+
+
+    <table>
+        <thead>
+            <tr>
+        <th class="col-md-3">
+            OrderID
+        </th>
+        <th class="col-md-3">
+            CustomerID
+        </th>
+        <th class="col-md-3">
+            Order Date
+        </th>
+        <th class="col-md-3">
+            Status
+        </th>
+        </tr>
+
+    </thead>
+    <tbody>
+    @foreach ( var item in Model)
+    {<tr>
+        <td class="col-md-3">
+        @Html.DisplayFor(modelItem =>  item.OrderID)
+                </td>
+                <td class="col-md-3">
+        @Html.DisplayFor(modelItem => item.CustomerID)
+                </td>
+                <td class="col-md-3">
+                @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td class="col-md-3">
+        @Html.DisplayFor(modelItem => item.OrderStatus.Status)
+        </td>
+    </tr>
+    }
+    </tbody>
+    </table>

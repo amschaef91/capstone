@@ -42,7 +42,7 @@ namespace PersonalProject.Controllers
         [Authorize(Roles = "Admin,Sales,Shipping")]
         public IActionResult ViewAll()
         {
-            var items = _context.Orders.Include(i => i.OrderID);
+            var items = _context.Orders.Include(i => i.OrderStatus).Where(o => o.OrderStatus.OrderID == o.OrderID ).ToList();
             return View(items);
         }
         [Authorize]
