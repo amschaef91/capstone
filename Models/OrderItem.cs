@@ -13,6 +13,7 @@ namespace PersonalProject.Models
         public int OrderID { get; set; }
         public Order? Order { get; set; }
         public int ItemID { get; set; }
+        public string Name { get; set; }
         public Item? Item { get; set; }
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]

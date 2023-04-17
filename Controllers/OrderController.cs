@@ -83,6 +83,7 @@ namespace PersonalProject.Controllers
                     {
                         OrderID = order.OrderID,
                         ItemID = item.Item.ItemID,
+                        Name = item.Item.Name,
                         UnitPrice = item.Item.Price,
                         Quantity = item.Quantity
                     };
