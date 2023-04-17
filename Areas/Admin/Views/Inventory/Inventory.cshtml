@@ -14,7 +14,7 @@
                                 <div class="carousel-inner">
                                     @foreach (var image in item.ItemImages.Where(img => img.ItemID == item.Item.ItemID))
                                     {
-                                        <div class="carousel-item @(image == item.ItemImages.FirstOrDefault() ? "active" : "")">
+                                        <div class="carousel-item @(image.IsMain ? "active" : "")">
                                             <img src="@image.ImgPath" class="d-block w-100" alt="@item.Item.Name" width="400" height="400" style="object-fit: contain">
                                         </div>
                                     }

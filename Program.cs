@@ -61,9 +61,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
-    name: "ViewAll",
-    pattern: "Inventory",
-    defaults: new { controller = "Item", action = "ViewAll" });
+        name: "order",
+        pattern: "Order/Checkout",
+        defaults: new { controller = "Order", action = "Checkout" });
 app.MapRazorPages();
 
 app.Run();
