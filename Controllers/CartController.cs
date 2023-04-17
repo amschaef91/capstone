@@ -99,7 +99,6 @@ namespace PersonalProject.Controllers
             return RedirectToAction("Index");
         }
 
-        public ViewResult Checkout() => View();
     }
 
 }

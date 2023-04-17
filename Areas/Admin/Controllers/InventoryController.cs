@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using PersonalProject.Areas.Admin.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using PersonalProject.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Eventing.Reader;
 
 namespace PersonalProject.Areas.Admin.Controllers
 {
@@ -32,7 +35,11 @@ namespace PersonalProject.Areas.Admin.Controllers
 
         public IActionResult Inventory()
         {
-            var items = _context.Items.ToList();
+            var items = _context.Items.Include(i => i.ItemImages).Select(i => new ItemImageViewModel
+            {
+                Item = i,
+                ItemImages = i.ItemImages.ToList()
+            });
             return View(items);
         }
 
@@ -90,6 +97,121 @@ namespace PersonalProject.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var model = new ItemImageViewModel
+            {
+                Item = _context.Items.FirstOrDefault(i => i.ItemID == id),
+                ItemImages = _context.ItemImages.Where(img => img.ItemID == id).ToList()
+            };
+            if (model == null) {
+                return NotFound();
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Item item)
+        {
+            if (id != item.ItemID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var images = _context.ItemImages.Where(img => img.ItemID == id).ToList();
+                    int mainImageId = int.Parse(Request.Form["MainImage"]);
+                    foreach (var img in images)
+                    {
+                        if (img.ID.Equals(mainImageId))
+                        {
+                            img.IsMain = true;
+                        }
+                        else
+                        {
+                            img.IsMain = false;
+                        }
+
+                        _context.Update(img);
+                    }
+                    await _context.SaveChangesAsync();
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+                }
+
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!(_context.Items.Any(i => i.ItemID == id)))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Inventory));
+            }
+            return View(item);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+     
+            var model = new ItemImageViewModel
+            {
+                Item = _context.Items.FirstOrDefault(i => i.ItemID == id),
+                ItemImages = _context.ItemImages.Where(img => img.ItemID == id).ToList()
+            };
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, Item item)
+        {
+            if (id != item.ItemID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Remove(item);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                   if( !_context.Items.Any(i =>  !i.ItemID.Equals(id))) { return NotFound(); }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Inventory));
+            }
+            return View(item);
         }
     }
 }

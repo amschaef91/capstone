@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using PersonalProject.Models;
 
-namespace PersonalProject.Areas.Admin.Models
+namespace PersonalProject.Models.ViewModels
 {
     public class ItemViewModel
     {

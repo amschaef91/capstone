@@ -1,11 +1,11 @@
-﻿@model PersonalProject.Areas.Admin.Models.ItemViewModel;
+﻿@model PersonalProject.Models.ViewModels.ItemViewModel
 @{
     ViewData["Title"] = "Add Item";
 }
 
 <h4>Add Items</h4>
 <hr />
-
+<a asp-controller="Inventory" asp-action="Inventory">View All Items</a>
 <form asp-controller="Inventory" asp-action="AddItem" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>

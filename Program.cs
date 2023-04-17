@@ -57,10 +57,13 @@ app.MapControllerRoute(
     name: "admin",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "ViewAll",
+    pattern: "Inventory",
+    defaults: new { controller = "Item", action = "ViewAll" });
 app.MapRazorPages();
 
 app.Run();

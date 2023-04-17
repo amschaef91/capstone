@@ -1,5 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PersonalProject.Models.ViewModels.ItemImageViewModel
+
 @{
+    ViewData["Title"] = "Edit Item";
 }
+<form asp-action="Edit" asp-controller="Inventory">
+<div class="row">
+    <div class="d-flex flex-wrap">
+    @foreach (var img in Model.ItemImages.Where(img => img.ItemID == Model.Item.ItemID))
+    {
+        <div class="p-2">
+         <img src="@img.ImgPath" class="d-block" width="75" height="75" style="object-fit: contain">
+        <input type="radio" name="MainImage" value="@img.ID" @(img.IsMain ? "checked" : "")>
+        <label asp-for="@img.IsMain"><span class="small">Primary image</span></label>
+                    <input type="hidden" asp-for="@img.ImgPath" />
+                    <input type="hidden" asp-for="@img.ID" />
+        </div>
+    }
+    </div>
+</div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Item.Name" class="control-label"></label>
+        <input asp-for="@Model.Item.Name" class="form-control" />
+        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Item.Description" class="control-label"></label>
+        <input asp-for="@Model.Item.Description" class="form-control" />
+        <span asp-validation-forDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Item.Price" class="control-label"></label>
+        <input asp-for="@Model.Item.Price" class="form-control" />
+        <span asp-validation-for="@Model.Item.Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Item.Stock" class="control-label"></label>
+        <input asp-for="@Model.Item.Stock" class="form-control" />
+        <span asp-validation-for="@Model.Item.Stock" class="text-danger"></span>
+    </div>
+
+    <hr />
+    <input type="hidden" asp-for="@Model.ItemImages" />
+    <input type="hidden" asp-for="@Model.Item.ItemID" />
+    <button type="submit" class="btn btn-primary">Edit Item</button>
+</form>

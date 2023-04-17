@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PersonalProject.Areas.Admin.Models;
 using PersonalProject.Models;
-using PersonalProject.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

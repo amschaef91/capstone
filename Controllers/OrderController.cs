@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalProject.Data;
 using System;
@@ -21,7 +22,7 @@ namespace PersonalProject.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin,Sales,Shipping")]
         public IActionResult ViewAll()
         {
             var items = _context.Orders.Include(i => i.OrderID);
