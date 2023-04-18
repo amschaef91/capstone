@@ -41,20 +41,13 @@
             {
                 <tr>
                     <td>
-                        <a asp-action="Details" asp-controller="Item"
-                       asp-route-id="@item.Item.ItemID"
-                       asp-route-slug="@item.Item.Name.Slug()">
                             @item.Item.Name
-                        </a>
                     </td>
                     <td>@item.Item.Price.ToString("c")</td>
                     <td>@item.Quantity</td>
                     <td>@item.Subtotal.ToString("c")</td>
                     <td>
                         <div class="float-end">
-                            <a asp-action="Edit" asp-controller="Cart"
-                           asp-route-id="@item.Item.ItemID"
-                               class="btn btn-primary">Edit</a>
                             <button type="submit" name="id" value="@item.Item.ItemID"
                                     class="btn btn-primary">
                                 Remove

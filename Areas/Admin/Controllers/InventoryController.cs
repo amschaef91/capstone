@@ -11,6 +11,7 @@ using System.Data;
 using PersonalProject.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace PersonalProject.Areas.Admin.Controllers
 {
@@ -194,10 +195,18 @@ namespace PersonalProject.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var imagePath = "/images/" + id + "/";
+            var directoryPath = _environment.WebRootPath + imagePath;
             if (ModelState.IsValid)
             {
                 try
                 {
+                    if (Directory.Exists(directoryPath))
+                    {
+                        Directory.Delete(directoryPath, true);
+                    }
+                    var itemImages = _context.ItemImages.Where(i => i.ItemID == id);
+                    _context.ItemImages.RemoveRange(itemImages);
                     _context.Remove(item);
                     await _context.SaveChangesAsync();
                 }

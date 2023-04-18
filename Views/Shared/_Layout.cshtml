@@ -40,6 +40,10 @@
             </div>
         </nav>
     </header>
+    @if (User.IsInRole("Sales") || User.IsInRole("Admin"))
+    {
+        <partial name="_ControlsPartial" />
+    }
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
