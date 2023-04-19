@@ -5,9 +5,9 @@
 <hr />
 <div>Username: @User.Identity.Name | Email: @Model.User.Email </div>
 <hr />
-@if (TempData["message"] != null)
+@if (TempData["updateMessage"] != null)
 {
-    <div class="alert alert-success">@TempData["message"]</div>
+    <div class="alert alert-success">@TempData["updateMessage"]</div>
 }
 @if (TempData["error"] != null)
 {

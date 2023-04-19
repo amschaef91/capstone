@@ -139,12 +139,12 @@ namespace PersonalProject.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["message"] = "Password Changed Successfully";
+                    TempData["updateMessage"] = "Password Changed Successfully";
                     return RedirectToAction("Manage");
                 }
                 else
                 {
-                    TempData["message"] = "Error";
+                    TempData["error"] = "Error";
                     foreach (IdentityError error in result.Errors)
                     {
                         ModelState.AddModelError("", error.Description);
@@ -172,7 +172,7 @@ namespace PersonalProject.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["message"] = "Email Changed Successfully";
+                    TempData["updateMessage"] = "Email Changed Successfully";
                     return RedirectToAction("Manage");
                 }
                 else

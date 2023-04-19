@@ -7,6 +7,10 @@
 }
 else
 {
+    if (TempData["message"] != null)
+    {
+        <div class="alert alert-success">@TempData["message"]</div>
+    }
     <form asp-action="Add" asp-controller="Cart">
     
         <div class="row">
