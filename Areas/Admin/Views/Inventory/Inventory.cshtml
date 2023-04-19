@@ -1,5 +1,14 @@
 ﻿@model IEnumerable<PersonalProject.Models.ViewModels.ItemImageViewModel>
+@{
+    ViewData["Title"] = "Add Item";
+}
 
+<h4>Add Item</h4>
+<br />
+<hr/>
+<a asp-action="AddItem">Add New Item</a>
+<hr/> 
+<br />
 <form>
     <form asp-controller="Inventory">
             <div class="row">

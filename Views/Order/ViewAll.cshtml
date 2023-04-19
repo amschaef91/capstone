@@ -1,37 +1,37 @@
 ﻿@model IEnumerable<Order>
 
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
-        <th class="col-md-3">
-            OrderID
-        </th>
-        <th class="col-md-3">
-            CustomerID
-        </th>
-        <th class="col-md-3">
-            Order Date
-        </th>
-        <th class="col-md-3">
-            Status
-        </th>
+            <th >
+                Order ID
+            </th>
+            <th >
+                Customer ID
+            </th>
+            <th>
+                Order Date
+            </th>
+            <th >
+                Status
+            </th>
         </tr>
 
     </thead>
     <tbody>
     @foreach ( var item in Model)
     {<tr>
-        <td class="col-md-3">
+        <td >
         @Html.DisplayFor(modelItem =>  item.OrderID)
                 </td>
-                <td class="col-md-3">
+                <td >
         @Html.DisplayFor(modelItem => item.CustomerID)
                 </td>
-                <td class="col-md-3">
+                <td >
                 @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
-                <td class="col-md-3">
+                <td >
         @Html.DisplayFor(modelItem => item.OrderStatus.Status)
         </td>
     </tr>

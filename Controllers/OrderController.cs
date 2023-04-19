@@ -34,9 +34,17 @@ namespace PersonalProject.Controllers
             return cart;
         }
 
+        [Authorize(Roles = "Admin,Sales,Shipping")]
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> ViewOrder()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var orders = _context.Orders.Where(o => o.CustomerID == user.CustomerID).Include(i => i.OrderStatus).ToList();
+            return View(orders);
         }
 
         [Authorize(Roles = "Admin,Sales,Shipping")]

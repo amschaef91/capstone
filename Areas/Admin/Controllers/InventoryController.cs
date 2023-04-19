@@ -43,7 +43,13 @@ namespace PersonalProject.Areas.Admin.Controllers
             });
             return View(items);
         }
+        
+        public IActionResult AddItem()
+        {
+            return View();
+        }
 
+        [HttpPost]
         public async Task<IActionResult> AddItem(ItemViewModel model)
         {
             if (ModelState.IsValid)
@@ -96,9 +102,9 @@ namespace PersonalProject.Areas.Admin.Controllers
                     _context.ItemImages.AddRange(images);
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Inventory));
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Inventory));
         }
 
         public async Task<IActionResult> Edit(int? id)

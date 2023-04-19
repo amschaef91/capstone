@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Order> 
+
+    @{
+        ViewData["Title"] = "Orders"; 
+    }
+
+   <h4>Orders</h4>
+   <hr/>
+   <br />
+
+   <table class="table">
+       <thead>
+           <tr>
+               <th>OrderID</th>
+           
+                <th>Order Date</th>
+                <th>Status</th>
+                </tr>
+       </thead>
+ <tbody>
+   @foreach (var order in Model)
+   {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem =>  order.OrderID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => order.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => order.OrderStatus.Status)
+                </td>
+            </tr>
+   }
+   </tbody>
+</table>
