@@ -2,15 +2,12 @@
 
 <form>
     <form asp-controller="Inventory">
-        @foreach (var group in Model.Select((item, index) => new { Item = item, Index = index })
-        .GroupBy(x => x.Index / 3))
-        {
             <div class="row">
-                @foreach (var item in group.Select(x => x.Item))
+                @foreach (var item in Model)
                 {
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
-                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
+                            <div id="carousel@(item.Item.ItemID)" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
                                 <div class="carousel-inner">
                                     @foreach (var image in item.ItemImages.Where(img => img.ItemID == item.Item.ItemID))
                                     {
@@ -19,11 +16,11 @@
                                         </div>
                                     }
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                            <a class="carousel-control-prev" href="#carousel@(item.Item.ItemID)" role="button" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                            <a class="carousel-control-next" href="#carousel@(item.Item.ItemID)" role="button" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </a>
@@ -46,6 +43,6 @@
                     </div>
                 }
             </div>
-        }
+        
     </form>
 </form>

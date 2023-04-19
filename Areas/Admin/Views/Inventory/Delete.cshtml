@@ -14,10 +14,6 @@
             {
                 <div class="p-2">
                     <img src="@img.ImgPath" class="d-block" width="75" height="75" style="object-fit: contain">
-                    <input type="radio" name="MainImage" value="@img.ID" @(img.IsMain ? "checked" : "")>
-                    <label asp-for="@img.IsMain"><span class="small">Primary image</span></label>
-                    <input type="hidden" asp-for="@img.ImgPath" />
-                    <input type="hidden" asp-for="@img.ID" />
                 </div>
             }
         </div>

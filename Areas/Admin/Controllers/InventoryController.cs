@@ -92,6 +92,7 @@ namespace PersonalProject.Areas.Admin.Controllers
                         }
                         );
                     }
+                    images[0].IsMain = true;
                     _context.ItemImages.AddRange(images);
                     await _context.SaveChangesAsync();
                 }
